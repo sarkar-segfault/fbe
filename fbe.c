@@ -40,6 +40,7 @@ void fb(const opts_t opts) {
       if (i % it.divisor == 0) {
         printf("%s%s", it.string, opts.separator);
         matched = true;
+        break;
       }
     }
 
@@ -63,9 +64,9 @@ int main(const int argc, const char *const *argv) {
   opts_t opts = (opts_t){0};
 
   if (argc < 2) {
-    opts.ifs[0] = (if_t){.divisor = 3, .string = "Fizz"};
+    opts.ifs[0] = (if_t){.divisor = 15, .string = "FizzBuzz"};
     opts.ifs[1] = (if_t){.divisor = 5, .string = "Buzz"};
-    opts.ifs[2] = (if_t){.divisor = 15, .string = "FizzBuzz"};
+    opts.ifs[2] = (if_t){.divisor = 3, .string = "Fizz"};
     opts.separator = "\n";
     opts.elses[0] = "$";
     opts.to = 100;
