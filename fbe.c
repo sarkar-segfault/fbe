@@ -39,8 +39,8 @@ typedef struct opts_t {
 } opts_t;
 
 void fb(const opts_t opts) {
-  if (opts.to < opts.from) FAIL_FAST("-t is smaller than -f");
-  if (opts.from > opts.to) FAIL_FAST("-f is smaller than -t");
+  if (opts.to < opts.from)
+    FAIL_FAST("-t is smaller than -f");
 
   bool matched;
   size_t i;
@@ -110,6 +110,9 @@ int main(const int argc, const char *const *argv) {
     }
 
     else if (!strcmp(arg, "-i")) {
+      if (ifno >= MAX_IFS)
+        FAIL_FAST("too many -i <divisor> <message>");
+
       const char *divisor = argv[++i];
       if (!divisor)
         FAIL_FAST("no <divisor> after -i");
@@ -129,39 +132,48 @@ int main(const int argc, const char *const *argv) {
     }
 
     else if (!strcmp(arg, "-e")) {
+      if (ifno >= MAX_IFS)
+        FAIL_FAST("too many -e <message>");
+
       const char *message = argv[++i];
-      if (!message) FAIL_FAST("no <message> after -e");
+      if (!message)
+        FAIL_FAST("no <message> after -e");
 
       opts.elses[elseno++] = (else_t)message;
     }
 
     else if (!strcmp(arg, "-t")) {
       const char *to = argv[++i];
-      if (!to) FAIL_FAST("no <number> after -t");
+      if (!to)
+        FAIL_FAST("no <number> after -t");
 
       char *end;
       errno = 0;
       size_t t = strtoull(to, &end, 10);
 
-      if (errno || end == to) FAIL_FAST("invalid <number> in -t <number>");
+      if (errno || end == to)
+        FAIL_FAST("invalid <number> in -t <number>");
       opts.to = t;
     }
 
     else if (!strcmp(arg, "-f")) {
       const char *from = argv[++i];
-      if (!from) FAIL_FAST("no <number> after -f");
+      if (!from)
+        FAIL_FAST("no <number> after -f");
 
       char *end;
       errno = 0;
       size_t f = strtoull(from, &end, 10);
 
-      if (errno || end == from) FAIL_FAST("invalid <number> in -f <number>");
-      opts.from = f; 
+      if (errno || end == from)
+        FAIL_FAST("invalid <number> in -f <number>");
+      opts.from = f;
     }
 
     else if (!strcmp(arg, "-s")) {
       const char *separator = argv[++i];
-      if (!separator) FAIL_FAST("no <separator> after -s");
+      if (!separator)
+        FAIL_FAST("no <separator> after -s");
 
       opts.separator = separator;
     }
