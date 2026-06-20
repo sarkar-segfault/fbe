@@ -5,11 +5,11 @@
 #include <string.h>
 
 #ifndef MAX_IFS
-#define MAX_IFS 32
+  #define MAX_IFS 32
 #endif
 
 #ifndef MAX_ELSES
-#define MAX_ELSES MAX_IFS
+  #define MAX_ELSES MAX_IFS
 #endif
 
 #define FAIL_FAST(msg)                                                                                                         \
@@ -26,15 +26,15 @@
 
 typedef struct if_t {
   size_t divisor;
-  const char *string;
+  const char * message;
 } if_t;
 
-typedef const char *else_t;
+typedef const char * else_t;
 
 typedef struct opts_t {
   if_t ifs[MAX_IFS];
   else_t elses[MAX_ELSES];
-  const char *separator;
+  const char * separator;
   size_t from, to;
 } opts_t;
 
@@ -51,11 +51,11 @@ void fb(const opts_t opts) {
     for (size_t j = 0; j < MAX_IFS; j++) {
       if_t it = opts.ifs[j];
 
-      if (!it.string)
+      if (!it.message)
         break;
 
       if (i % it.divisor == 0) {
-        printf("%s%s", it.string, opts.separator);
+        printf("%s%s", it.message, opts.separator);
         matched = true;
         break;
       }
@@ -77,13 +77,13 @@ void fb(const opts_t opts) {
   }
 }
 
-int main(const int argc, const char *const *argv) {
+int main(const int argc, const char * const * argv) {
   opts_t opts = (opts_t){.separator = "\n", .from = 1, .to = 100};
 
   if (argc < 2) {
-    opts.ifs[0] = (if_t){.divisor = 15, .string = "FizzBuzz"};
-    opts.ifs[1] = (if_t){.divisor = 5, .string = "Buzz"};
-    opts.ifs[2] = (if_t){.divisor = 3, .string = "Fizz"};
+    opts.ifs[0] = (if_t){.divisor = 15, .message = "FizzBuzz"};
+    opts.ifs[1] = (if_t){.divisor = 5, .message = "Buzz"};
+    opts.ifs[2] = (if_t){.divisor = 3, .message = "Fizz"};
     opts.separator = "\n";
     opts.elses[0] = "$";
 
@@ -95,7 +95,7 @@ int main(const int argc, const char *const *argv) {
   size_t elseno = 0;
 
   for (int i = 1; i < argc; i++) {
-    const char *arg = argv[i];
+    const char * arg = argv[i];
 
     if (!strcmp(arg, "-h")) {
       PASS_FAST("fbe (fizzbuzz engine)\n"
@@ -113,29 +113,29 @@ int main(const int argc, const char *const *argv) {
       if (ifno >= MAX_IFS)
         FAIL_FAST("too many -i <divisor> <message>");
 
-      const char *divisor = argv[++i];
+      const char * divisor = argv[++i];
       if (!divisor)
         FAIL_FAST("no <divisor> after -i");
 
-      const char *message = argv[++i];
+      const char * message = argv[++i];
       if (!message)
         FAIL_FAST("no <message> after -i <divisor>");
 
-      char *end;
+      char * end;
       errno = 0;
       size_t div = strtoull(divisor, &end, 10);
 
       if (errno || end == divisor)
         FAIL_FAST("invalid <divisor> in -i <divisor> <message>");
 
-      opts.ifs[ifno++] = (if_t){.divisor = div, .string = message};
+      opts.ifs[ifno++] = (if_t){.divisor = div, .message = message};
     }
 
     else if (!strcmp(arg, "-e")) {
       if (ifno >= MAX_IFS)
         FAIL_FAST("too many -e <message>");
 
-      const char *message = argv[++i];
+      const char * message = argv[++i];
       if (!message)
         FAIL_FAST("no <message> after -e");
 
@@ -143,11 +143,11 @@ int main(const int argc, const char *const *argv) {
     }
 
     else if (!strcmp(arg, "-t")) {
-      const char *to = argv[++i];
+      const char * to = argv[++i];
       if (!to)
         FAIL_FAST("no <number> after -t");
 
-      char *end;
+      char * end;
       errno = 0;
       size_t t = strtoull(to, &end, 10);
 
@@ -157,11 +157,11 @@ int main(const int argc, const char *const *argv) {
     }
 
     else if (!strcmp(arg, "-f")) {
-      const char *from = argv[++i];
+      const char * from = argv[++i];
       if (!from)
         FAIL_FAST("no <number> after -f");
 
-      char *end;
+      char * end;
       errno = 0;
       size_t f = strtoull(from, &end, 10);
 
@@ -171,7 +171,7 @@ int main(const int argc, const char *const *argv) {
     }
 
     else if (!strcmp(arg, "-s")) {
-      const char *separator = argv[++i];
+      const char * separator = argv[++i];
       if (!separator)
         FAIL_FAST("no <separator> after -s");
 

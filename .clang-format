@@ -1,1 +1,14 @@
+BasedOnStyle: LLVM
 ColumnLimit: 128
+PointerAlignment: Middle
+IndentPPDirectives: BeforeHash
+
+SortIncludes: true
+IncludeBlocks: Regroup
+IncludeIsMainRegex: '$.'
+IncludeCategories:
+  - Regex: '^<.*>'
+    Priority: 1
+
+  - Regex: '^".*"'
+    Priority: 2
